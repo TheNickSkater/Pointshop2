@@ -20,44 +20,108 @@ MODULE.Settings = {}
 --These are sent to the client on join
 MODULE.Settings.Shared = { }
 
+--TTT2 specific settings
+MODULE.TTT2Settings = {
+		Kills = {
+			TeamKill = {
+				value = -50,
+				label = "Teamkill",
+				tooltip = "Points awarded/removed when killing a teammate. This will only trigger if no other exception is made for specific roles.",
+				message = "Teammate killed",
+				delay = true
+			},
+
+			EnemyKill = {
+				value = 100,
+				label = "EnemyKill",
+				tooltip = "Points awarded/removed when killing somebody not in your team. This will only trigger if no other exception is made for specific roles.",
+				message = "Enemy killed",
+				delay = true
+			},
+
+			TraitorKillsInnocent = {
+				value = 100,
+				role1 = ROLE_TRAITOR,
+				role2 = ROLE_INNOCENT,
+				label = "Traitor kills Innocent",
+				tooltip = "Points awarded/removed when a Traitor kills an Innocent.",
+				message = "Innocent killed"
+			},
+
+			InnocentKillsTraitor = {
+				value = 100,
+				role1 = ROLE_INNOCENT,
+				role2 = ROLE_TRAITOR,
+				label = "Innocent kills Traitor",
+				tooltip = "Points awarded/removed when an Innocent kills a Traitor.",
+				message = "Traitor killed",
+				delay = true
+			},
+		},
+		RoundWin = {
+			Default = {
+				value = 50,
+				label = "Default win",
+				tooltip = "Points awarded/removed for Teams that have no special exception.",
+				message = "Round win"
+			},
+
+			Traitors = {
+				value = 50,
+				team = TEAM_TRAITOR,
+				label = "Traitors win",
+				tooltip = "Points awarded/removed when Traitors win the round.",
+				message = "Round win"
+			},
+
+			Innocents = {
+				value = 50,
+				team = TEAM_INNOCENT,
+				label = "Innocents win",
+				tooltip = "Points awarded/removed when Innocents win the round.",
+				message = "Round win"
+			}
+		}
+}
+
 --These are not sent
 MODULE.Settings.Server = {
 	Kills = {
 		info = {
 			label = "Kill Rewards"
 		},
-		
+
 		DelayReward = {
 			value = true,
 			label = "Delay Rewards until round end",
 			tooltip = "Use this to prevent players to meta-game using the kill notifications. Kill points are collected and awarded at round end.",
 		},
-		
+
 		TraitorKillsInno = {
 			value = 100,
 			label = "Traitor kills Innocent",
 			tooltip = "Points awarded to a traitor when he kills an innocent player",
 		},
-		
+
 		TraitorKillsDetective = {
-			value = 150, 
+			value = 150,
 			label = "Traitor kills Detective",
 			tooltip = "Points awarded to a traitor when he kills a detective",
 		},
-		
+
 		DetectiveKillsTraitor = {
 			value = 200,
 			label = "Detective kills Traitor",
 			tooltip = "Points awarded to a detective when he kills a traitor",
 		},
-		
-		DetectiveDnaBonus = { 
+
+		DetectiveDnaBonus = {
 			value = 50,
 			label = "Detective DNA Bonus",
 			tooltip = "Additional points awarded to a detective if he had DNA on a traitor he killed"
 		},
-		
-		InnoKillsTraitor = { 
+
+		InnoKillsTraitor = {
 			value = 250,
 			label = "Innocent kills Traitor",
 			tooltip = "Points awarded to an innocent when he kills a traitor",
@@ -72,25 +136,25 @@ MODULE.Settings.Server = {
 			label = "Innocents win",
 			tooltip = "Points awarded to every innocent when they win the round"
 		},
-		
-		CleanRound = { 
+
+		CleanRound = {
 			value = 100,
 			label = "Clean round bonus",
 			tooltip = "Bonus given to players if they did not hurt a teammate (no karma loss)"
 		},
-		
+
 		InnocentAlive = {
 			value = 100,
 			label = "Innocent alive bonus",
 			tooltip = "Bonus given to innocents that are alive at the end of the round",
 		},
-		
+
 		Traitor = {
 			value = 300,
 			label = "Traitors win",
 			tooltip = "Points awarded to every traitor when they win the round"
 		},
-		
+
 		TraitorAlive = {
 			value = 100,
 			label = "Traitor alive bonus",
@@ -99,9 +163,9 @@ MODULE.Settings.Server = {
 	},
 	Detective = {
 		info = {
-			label = "Detective Rewards" 
+			label = "Detective Rewards"
 		},
-		DnaFound = { 
+		DnaFound = {
 			value = 50,
 			label = "DNA Found",
 			tooltip = "Points awarded to a detective upon collecting DNA"
