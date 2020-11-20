@@ -77,7 +77,7 @@ local function PaintHatIcon(itemClass)
 		surface.DrawRect(0, 0, 512, 512)
 		draw.SimpleText( "Mising Outfit", "PS2_LargeHeading", 256, 256, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 		Pointshop2View:getInstance():displayError( "Item " .. itemClass:GetPrintName() .. " has no base outfit! Please add one. (tell an admin)" )
-		PrintTable(itemClass)
+		--PrintTable(itemClass)
 		return
 	end
 	pac.SetupENT( entity, "Owner" )
@@ -85,13 +85,13 @@ local function PaintHatIcon(itemClass)
 	entity:AttachPACPart( outfit )
 	entity:FrameAdvance( 1 )
 	pac.ShowEntityParts( entity )
-	
+
 	local petModel = getPetModel( outfit )
 
 	for k, v in pairs( entity.pac_outfits or {} ) do
 		pac.HookEntityRender( entity, v )
 	end
-	
+
 	if not petModel then
 		local viewInfo = itemClass.iconInfo.shop.iconViewInfo
 		entity:SetModel( plyModel )
@@ -127,7 +127,7 @@ local function PaintHatIcon(itemClass)
 		local lookAt = Vector( 0, 0, 0 )
 		local fov = 70
 		local PrevMins, PrevMaxs = entity:GetRenderBounds()
-		camPos = PrevMins:Distance(PrevMaxs) * Vector(0.65, 0.65, 0.5) 
+		camPos = PrevMins:Distance(PrevMaxs) * Vector(0.65, 0.65, 0.5)
 		lookAt = (PrevMaxs + PrevMins) / 2
 
 		-- local view = generateViewInfo( entity )

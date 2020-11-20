@@ -24,7 +24,7 @@ MODULE.Settings.Shared = { }
 MODULE.TTT2Settings = {
 		Kills = {
 			TeamKill = {
-				value = -50,
+				value = -80,
 				label = "Teamkill",
 				tooltip = "Points awarded/removed when killing a teammate. This will only trigger if no other exception is made for specific roles.",
 				message = "Teammate killed",
@@ -32,7 +32,7 @@ MODULE.TTT2Settings = {
 			},
 
 			EnemyKill = {
-				value = 100,
+				value = 15,
 				label = "EnemyKill",
 				tooltip = "Points awarded/removed when killing somebody not in your team. This will only trigger if no other exception is made for specific roles.",
 				message = "Enemy killed",
@@ -40,7 +40,7 @@ MODULE.TTT2Settings = {
 			},
 
 			TraitorKillsInnocent = {
-				value = 100,
+				value = 15,
 				role1 = ROLE_TRAITOR,
 				role2 = ROLE_INNOCENT,
 				label = "Traitor kills Innocent",
@@ -49,7 +49,7 @@ MODULE.TTT2Settings = {
 			},
 
 			InnocentKillsTraitor = {
-				value = 100,
+				value = 20,
 				role1 = ROLE_INNOCENT,
 				role2 = ROLE_TRAITOR,
 				label = "Innocent kills Traitor",
@@ -60,14 +60,14 @@ MODULE.TTT2Settings = {
 		},
 		RoundWin = {
 			Default = {
-				value = 50,
+				value = 15,
 				label = "Default win",
 				tooltip = "Points awarded/removed for Teams that have no special exception.",
 				message = "Round win"
 			},
 
 			Traitors = {
-				value = 50,
+				value = 15,
 				team = TEAM_TRAITOR,
 				label = "Traitors win",
 				tooltip = "Points awarded/removed when Traitors win the round.",
@@ -75,7 +75,7 @@ MODULE.TTT2Settings = {
 			},
 
 			Innocents = {
-				value = 50,
+				value = 15,
 				team = TEAM_INNOCENT,
 				label = "Innocents win",
 				tooltip = "Points awarded/removed when Innocents win the round.",
@@ -93,7 +93,7 @@ MODULE.Settings.Server = {
 
 		DelayReward = {
 			value = true,
-			label = "Delay Rewards until round end",
+			label = "Delay Rewards until round endddd",
 			tooltip = "Use this to prevent players to meta-game using the kill notifications. Kill points are collected and awarded at round end.",
 		},
 

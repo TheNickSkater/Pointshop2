@@ -15,13 +15,13 @@ function Pointshop2.UpdatePointsOverTime( )
 
 			local rank = titleLookup[ply:GetUserGroup()] or ply:GetUserGroup( )
 			-- Give points only if player is not afk
-			if not ( Pointshop2.GetSetting( "Pointshop 2", "BasicSettings.PotAfkCheck" ) and ply:GetNWBool( "playerafk", false ) ) then
+			if not ply:IsSpec() and not ( Pointshop2.GetSetting( "Pointshop 2", "BasicSettings.PotAfkCheck" ) and ply:GetNWBool( "playerafk", false ) ) then
 				ply:PS2_AddStandardPoints( bonus, rank .. " Bonus", true )
 			end
 		end
 
 		-- Give points only if player is not afk
-		if not ( Pointshop2.GetSetting( "Pointshop 2", "BasicSettings.PotAfkCheck" ) and ply:GetNWBool( "playerafk", false ) ) then
+		if not ply:IsSpec() and not ( Pointshop2.GetSetting( "Pointshop 2", "BasicSettings.PotAfkCheck" ) and ply:GetNWBool( "playerafk", false ) ) then
 			ply:PS2_AddStandardPoints( points, "Playing on the Server" )
 		end
 	end

@@ -58,6 +58,7 @@ end
 
 function ITEM:OnHolster( )
 	local ply = self:GetOwner( )
+	ply:SetModel("models/player/phoenix.mdl")
 	dp("on holster", ply)
 	timer.Simple( 0, function( )
 		hook.Run( "PlayerSetModel", ply )

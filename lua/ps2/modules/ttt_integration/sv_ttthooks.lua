@@ -101,7 +101,7 @@ hook.Add( "TTTEndRound", "PS2_TTTEndRound", function( result )
 		end
 
 		for k, v in pairs( player.GetAll( ) ) do
-			if not v:HasTeam(result) or (v.IsGhost and v:IsGhost()) then continue end
+			if not v:HasTeam(result) or (v.IsGhost and v:IsGhost()) or not table.HasValue( playersInRound, v ) then continue end
 
 			v:PS2_AddStandardPoints(points, message)
 		end

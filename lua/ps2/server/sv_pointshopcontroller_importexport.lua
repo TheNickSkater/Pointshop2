@@ -172,7 +172,7 @@ function Pointshop2Controller:importCategoryOrganization( importTable )
 
 					if not category.id then
 						print( "Item " .. id .. " invalid category " )
-						PrintTable( category )
+						--PrintTable( category )
 						return
 					end
 
@@ -243,8 +243,8 @@ hook.Add( "LibK_InvalidClassError", "ShowRepairDatabaseHint", function( class, c
 	Pointshop2Controller:getInstance():startView( "Pointshop2View", "HandleDecodeError", admins, "SERVER", className )
 end )
 
-hook.Add( "PS2_PlayerFullyLoaded", "ErrorNotifier", function( ply ) 
-	timer.Simple( 2, function( ) 
+hook.Add( "PS2_PlayerFullyLoaded", "ErrorNotifier", function( ply )
+	timer.Simple( 2, function( )
 		if IsValid( ply ) and ply:IsAdmin( ) and messageLater then
 			Pointshop2Controller:getInstance():startView( "Pointshop2View", "HandleDecodeError", ply, "SERVER", messageLater )
 		end

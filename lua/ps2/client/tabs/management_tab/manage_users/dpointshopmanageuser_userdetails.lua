@@ -24,10 +24,10 @@ function PANEL:Init( )
 	/* Player Info */
 	self.generalInfo = self:AddCategory( "Player Info" )
 	self.generalInfo:SetTall( 64 + 10 )
-	
+
 	local splitPanel = vgui.Create( "DSplitPanel", self.generalInfo )
 	splitPanel:Dock( FILL )
-	
+
 	self.generalInfo.avatar = vgui.Create( "AvatarImage", splitPanel.left )
 	self.generalInfo.avatar:SetPos( 5, 5 )
 	self.generalInfo.avatar:SetSteamID( "BOT", 64 )
@@ -121,7 +121,7 @@ function PANEL:Init( )
 	slotsScroll:SetTall( 64 + 32 )
 	slotsScroll:GetCanvas():DockPadding( 0, 0, 0, 5 )
 	Derma_Hook( slotsScroll, "Paint", "Paint", "InnerPanelBright" )
-	
+
 	self.slotsLayout = vgui.Create( "DIconLayout", slotsScroll )
 	self.slotsLayout:Dock( TOP )
 	self.slotsLayout:DockMargin( 0, 0, 0, 0 )
@@ -294,10 +294,10 @@ function PANEL:SetPlayerData( playerData )
 	-- Add equipped items
 	for k,v in pairs(self.playerData.slots) do
 		if not IsValid(self.slotsLayout[v.slotName]) then
-			PrintTable(self.playerData.slots)
-			PrintTable(Pointshop2.EquipmentSlots)
+			--PrintTable(self.playerData.slots)
+			--PrintTable(Pointshop2.EquipmentSlots)
 			KLogf( 2, "A slot with name %s was found in the database, however that slot is unknown ingame.", v.slotName )
-			Pointshop2View:getInstance():showRepairDatabase( 
+			Pointshop2View:getInstance():showRepairDatabase(
 Format([[ERROR: You have references to a slot %s in the database that does not exist in game.
 This can be fixed by repairing the database, however this will permanently delete the slot and items that are equipped in it for all players.
 If you believe the slot should be there please make sure that all of your DLC and Addons are uploaded correctly.

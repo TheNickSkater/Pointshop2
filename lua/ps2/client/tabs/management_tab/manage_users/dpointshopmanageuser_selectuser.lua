@@ -63,6 +63,7 @@ function PANEL:Init( )
 
 	function self.onlinePlayersTable:Think( )
 		for k, v in pairs( player.GetAll( ) ) do
+			if v:IsBot() or not v:GetNWInt( "KPlayerId", nil ) then continue end
 			if not self:GetPlayerLine( v ) then
 				local wallet = v:PS2_GetWallet( ) or { points = "", premiumPoints = "" }
 				local line = self:AddLine( v:Nick( ), wallet.points, wallet.premiumPoints )

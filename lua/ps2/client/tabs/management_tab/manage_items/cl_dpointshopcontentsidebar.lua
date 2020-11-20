@@ -46,7 +46,7 @@ function PANEL:CreateSaveNotification()
 					Lerp( p, standardCol[2], self.forcedCol[2] ),
 					Lerp( p, standardCol[3], self.forcedCol[3] ),
 				} ) )
-				PrintTable( self.forcedCol )
+				--PrintTable( self.forcedCol )
 			end
 
 			LibK.tween( easing.inQuad, 0.2, function( p )

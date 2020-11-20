@@ -10,6 +10,9 @@ if SERVER then
 end
 
 local function addPointsBySteamid( calling_ply, steamId, currencyType, amount )
+	if not string.StartWith(steamId, "STEAM") then
+		steamId = util.SteamIDFrom64(steamId)
+	end
 	Pointshop2Controller:getInstance( ):addPointsBySteamId( steamId, currencyType, amount )
 	:Fail( function( errid, err )
 		KLogf( 2, "[Pointshop 2] ERROR: Couldn't give %i %s to %s, %i - %s", amount, currencyType, steamId, errid, err )

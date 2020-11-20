@@ -137,7 +137,7 @@ function Pointshop2.HidePacOnSpectate( )
 		if IsValid( ply ) then
 			for k,v in pairs(ply.pac_outfits or {}) do v:SetHide(true) end
 		end
-	else 
+	else
 		local ply = LocalPlayer( ).lastSpecTarget
 		if IsValid( ply ) then
 			for k,v in pairs(ply.pac_outfits or {}) do v:SetHide(false) end

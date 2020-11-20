@@ -179,21 +179,21 @@ function Pointshop2Controller:handleItemUnequip( item, ply, slotName )
             if slotObj.Item != item then
                 MsgC( Color(255, 0, 0), "Assertion Failure: Cached item does not match slot item\n" )
                 MsgC( Color(255, 0, 0), LibK.GLib.StackTrace (nil, 1) )
-                PrintTable(slotObj)
+                --PrintTable(slotObj)
             end
             ply.PS2_Slots[slotId] = nil
         end
     end
-    
+
     local players = {}
     for k, v in pairs( player.GetAll() ) do
         if getPromiseState( v.fullyLoadedPromise ) != "done" then
             continue
         end
-        
+
         table.insert( players, v )
     end
-    
+
     self:startView( "Pointshop2View", "playerUnequipItem", players, ply, item.id )
 end
 

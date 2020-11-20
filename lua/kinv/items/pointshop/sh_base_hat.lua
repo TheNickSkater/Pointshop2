@@ -16,7 +16,7 @@ if CLIENT then
 		local ply = self:GetOwner( )
 		if not IsValid(ply) then
 			debug.Trace( )
-			PrintTable( self )
+			--PrintTable( self )
 			return
 		end
 

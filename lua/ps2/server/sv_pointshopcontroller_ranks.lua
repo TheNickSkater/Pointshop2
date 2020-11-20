@@ -15,7 +15,7 @@ function Pointshop2Controller:updateRankRestrictions( ply, itemClassNames, ranks
 		end )
 	end )
 	:Then( function( persistences )
-		PrintTable(persistences)
+		--PrintTable(persistences)
 		local persistenceIds = LibK._.map( persistences, function( p ) return tostring( p.id ) end )
 		self:notifyItemsChanged( persistenceIds )
 	end )
