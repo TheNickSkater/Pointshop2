@@ -40,14 +40,38 @@ function ITEM:initialize(id)
 end
 
 function ITEM.static:GetBuyPrice( ply )
+  if not self:AllowReduction() then
     return {
         points = self.Price.points,
         premiumPoints = self.Price.premiumPoints
     }
+  end
+    local price_table = {}
+
+    local points_price = hook.Run("Pointshop2CalculatePrice", ply, self)
+
+    if points_price == nil then points_price = self.Price.points end
+
+    price_table = {
+      points = points_price,
+      premiumPoints = self.Price.premiumPoints
+    }
+
+    return price_table
 end
 
 function ITEM:isPremiumItem( )
     return not self.Price.points and self.Price.premiumPoints
+end
+
+function ITEM:AllowReduction()
+  local allowReduction = self.allowReduction
+
+  if allowReduction == nil or allowReduction == 0 then
+    return false
+  end
+
+  return true
 end
 
 function ITEM:GetSellPrice( ply )
@@ -158,6 +182,7 @@ function ITEM.static.generateFromPersistence( itemTable, persistenceItem )
     itemTable.PrintName = persistenceItem.name
     itemTable.Description = persistenceItem.description
     itemTable.Servers = persistenceItem.servers or {}
+    itemTable.allowReduction = persistenceItem.allowReduction
     if not persistenceItem.ranks or persistenceItem.ranks == "" then
         itemTable.Ranks = {}
     else

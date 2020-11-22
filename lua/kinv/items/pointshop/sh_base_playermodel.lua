@@ -60,6 +60,9 @@ function ITEM:OnHolster( )
 	local ply = self:GetOwner( )
 	ply:SetModel("models/player/phoenix.mdl")
 	dp("on holster", ply)
+	if ply:Alive() and not ply:IsSpec() then
+		ply:SetModel("models/player/phoenix.mdl")
+	end
 	timer.Simple( 0, function( )
 		hook.Run( "PlayerSetModel", ply )
 		hook.Run( "PS2_DoUpdatePreviewModel" )

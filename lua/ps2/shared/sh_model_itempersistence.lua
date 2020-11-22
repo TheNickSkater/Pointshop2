@@ -15,7 +15,8 @@ ItemPersistence.static.model = {
 		description = "text",
 		createdAt = "createdTime",
 		updatedAt = "updatedTime",
-		servers = "luadata"
+		servers = "luadata",
+		allowReduction = "optKey" --INT NULL
 	}
 }
 
@@ -44,6 +45,7 @@ function ItemPersistence.static.createOrUpdateFromSaveTable( saveTable, doUpdate
 		instance.name = saveTable.name
 		instance.baseClass = saveTable.baseClass
 		instance.description = saveTable.description
+		instance.allowReduction = saveTable.allowReduction
 		return instance:save( )
 	end )
 end
