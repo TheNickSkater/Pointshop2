@@ -157,7 +157,6 @@ function PANEL:OnDeselected( )
 end
 
 function PANEL:Select( )
-	print("PANEL:Select()")
     if self.noSelect then
         return
     end

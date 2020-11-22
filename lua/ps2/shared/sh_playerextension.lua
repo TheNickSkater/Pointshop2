@@ -59,7 +59,7 @@ function Player:PS2_GetFirstItemOfClass( class )
 end
 
 function Player:PS2_CanAfford( itemClass )
-	local price = itemClass:GetBuyPrice()
+	local price = itemClass:GetBuyPrice(self)
 	local wallet = self:PS2_GetWallet()
 	if not wallet or not price then
 		return false
