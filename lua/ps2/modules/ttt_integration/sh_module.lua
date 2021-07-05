@@ -21,8 +21,18 @@ MODULE.Settings = {}
 MODULE.Settings.Shared = { }
 
 --TTT2 specific settings
-MODULE.TTT2Settings = {
+MODULE.Settings.Server = {
 		Kills = {
+			info = {
+				label = "Kill Rewards"
+			},
+
+			DelayReward = {
+				value = true,
+				label = "Delay Rewards until round end",
+				tooltip = "Use this to prevent players to meta-game using the kill notifications. Kill points are collected and awarded at round end.",
+			},
+
 			TeamKill = {
 				value = -80,
 				label = "Teamkill",
@@ -59,6 +69,9 @@ MODULE.TTT2Settings = {
 			},
 		},
 		RoundWin = {
+			info = {
+				label = "Round Win Rewards"
+			},
 			Default = {
 				value = 15,
 				label = "Default win",
@@ -84,8 +97,10 @@ MODULE.TTT2Settings = {
 		}
 }
 
+--MODULE.Settings.Server = MODULE.TTT2Settings
+
 --These are not sent
-MODULE.Settings.Server = {
+--[[MODULE.Settings.Server = {
 	Kills = {
 		info = {
 			label = "Kill Rewards"
@@ -171,7 +186,7 @@ MODULE.Settings.Server = {
 			tooltip = "Points awarded to a detective upon collecting DNA"
 		},
 	},
-}
+}]]--
 
 -- For Drops integration: Returns players that can get a drop once the round ends
 function MODULE.GetPlayersForDrops( )

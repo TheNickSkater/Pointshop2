@@ -6,7 +6,7 @@ function PANEL:Init( )
 	self.title:Dock( TOP )
 	self.title:SetFont( self:GetSkin().SmallTitleFont )
 	self.title:SetColor( self:GetSkin().Colours.Label.Bright )
-	self.title:SetText( "" ) 
+	self.title:SetText( "" )
 	self.title:SizeToContents( )
 	self.title:DockMargin( 5, 5, 5, 0 )
 end
@@ -24,39 +24,40 @@ function PANEL:CreateBaseSettingPanel( settingsPath, settingInfo )
 	panel.Paint = function( ) end
 	panel:DockPadding( 10, 0, 10, 0 )
 	panel:SetTooltip( settingInfo.tooltip or "" )
-	
+
 	local label = vgui.Create( "DLabel", panel )
 	label:SetText( settingInfo.label )
 	label:Dock( LEFT )
 	label:SizeToContents( )
 	label:SetContentAlignment( 6 )
 	panel.label = label
-	
+
 	return panel
 end
 
 function PANEL:CreateNumberSetting( settingsPath, settingInfo )
 	local panel = self:CreateBaseSettingPanel( settingsPath, settingInfo )
-	
+
 	panel.numberWang = vgui.Create( "DNumberWang", panel )
 	panel.numberWang:Dock( RIGHT )
+	panel.numberWang:SetMin(-10000)
 	function panel.numberWang.OnValueChanged( wang, val )
 		val = tonumber( val )
 		self.listener:OnValueChanged( settingsPath, val )
 	end
-	
+
 	function panel.SetValue( panel, val )
 		panel.numberWang:SetMax( val < 1000 and 1000 or val * 10 )
 		panel.numberWang:SetValue( val )
 		self.listener:OnValueChanged( settingsPath, val )
 	end
-	
+
 	return panel
 end
 
 function PANEL:CreateRadioSetting( settingsPath, settingInfo )
 	local panel = self:CreateBaseSettingPanel( settingsPath, settingInfo )
-	
+
 	panel.radiobox = vgui.Create( "DRadioChoice", panel )
 	panel.radiobox:SetSkin( Pointshop2.Config.DermaSkin )
 	panel.radiobox:Dock( RIGHT )
@@ -77,31 +78,31 @@ function PANEL:CreateRadioSetting( settingsPath, settingInfo )
 		panel.radiobox:SelectChoiceByText( val )
 		self.listener:OnValueChanged( settingsPath, val )
 	end
-	
+
 	return panel
 end
 
 function PANEL:CreateTextentrySetting( settingsPath, settingInfo )
     local panel = self:CreateBaseSettingPanel( settingsPath, settingInfo )
-    
+
     panel.textEntry = vgui.Create( "DTextEntry", panel )
     panel.textEntry:Dock( RIGHT )
     panel.textEntry:SetUpdateOnType( true )
     function panel.textEntry.OnValueChange( wang, val )
         self.listener:OnValueChanged( settingsPath, val )
     end
-    
+
     function panel.SetValue( panel, val )
         panel.textEntry:SetValue( val )
         self.listener:OnValueChanged( settingsPath, val )
     end
-    
+
     return panel
 end
 
 function PANEL:CreateCheckboxSetting( settingsPath, settingInfo )
 	local panel = self:CreateBaseSettingPanel( settingsPath, settingInfo )
-	
+
 	panel.container = vgui.Create( "DPanel", panel )
 	panel.container.Paint = function( ) end
 	panel.container:Dock( RIGHT )
@@ -109,23 +110,23 @@ function PANEL:CreateCheckboxSetting( settingsPath, settingInfo )
 		self:SizeToChildren( true, false )
 		self.checkbox:SetPos( 0, ( self:GetTall( ) - self.checkbox:GetTall( ) ) / 2 )
 	end
-	
+
 	panel.container.checkbox = vgui.Create( "DCheckBox", panel.container )
 	function panel.container.checkbox.OnChange( chkbox, val )
 		self.listener:OnValueChanged( settingsPath, val )
 	end
-	
+
 	function panel.SetValue( panel, val )
 		panel.container.checkbox:SetChecked( val )
 		self.listener:OnValueChanged( settingsPath, val )
 	end
-	
+
 	return panel
 end
 
 function PANEL:CreateComboboxSetting( settingsPath, settingInfo )
 	local panel = self:CreateBaseSettingPanel( settingsPath, settingInfo )
-	
+
 	panel.combobox = vgui.Create( "DComboBox", panel )
 	panel.combobox:Dock( RIGHT )
 	for k, v in pairs( settingInfo.possibleValues ) do
@@ -139,9 +140,9 @@ function PANEL:CreateComboboxSetting( settingsPath, settingInfo )
 		panel.combobox:ChooseOption( val )
 		self.listener:OnValueChanged( settingsPath, val )
 	end
-	
+
 	return panel
-end 
+end
 
 function PANEL:AddSettingByType( settingsPath, settingInfo )
 	local typeLookup = {
@@ -151,14 +152,14 @@ function PANEL:AddSettingByType( settingsPath, settingInfo )
 		string = "CreateTextentrySetting",
 		radio = "CreateRadioSetting"
 	}
-	
+
 	local valueType = settingInfo.type or type( settingInfo.value )
 	local creatorFn = typeLookup[valueType]
 	if not creatorFn then
 		ErrorNoHalt( "No creator function found for " .. type( value ) )
 		return
 	end
-	
+
 	local settingPanel = self[creatorFn]( self, settingsPath, settingInfo )
 	self:AddSettingPanel( settingPanel )
 	if settingInfo.value then
@@ -174,7 +175,7 @@ function PANEL:AddSettingPanel( pnl )
 end
 
 function PANEL:AddCheckboxedSetting( pnl )
-	
+
 end
 
 Derma_Hook( PANEL, "Paint", "Paint", "InnerPanel" )

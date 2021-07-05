@@ -69,10 +69,14 @@ function Pointshop2Controller:addToPlayerWallet( ply, currencyType, addition )
 		return Promise.Resolve()
 	end
 
-	local query = Format("UPDATE ps2_wallet SET %s = %s + %i WHERE id = %i", currencyType, currencyType, addition, ply.PS2_Wallet.id)
+	local new_points = ply.PS2_Wallet[currencyType] + addition
+
+	new_points = math.max(0, new_points)
+
+	local query = Format("UPDATE ps2_wallet SET %s = %s + %s WHERE id = %i", currencyType, new_points, addition, ply.PS2_Wallet.id)
 	return Pointshop2.DB.DoQuery( query )
 	:Done( function( )
-		ply.PS2_Wallet[currencyType] = ply.PS2_Wallet[currencyType] + addition
+		ply.PS2_Wallet[currencyType] = new_points
 		self:broadcastWalletChanges( ply.PS2_Wallet )
 	end )
 end

@@ -86,8 +86,8 @@ hook.Add( "TTTEndRound", "PS2_TTTEndRound", function( result )
 
 		local exception_found = false
 
-		for v in pairs(Pointshop2.GetModule('TTT Integration').TTT2Settings.RoundWin) do
-			local tmp_table = Pointshop2.GetModule('TTT Integration').TTT2Settings.RoundWin[v]
+		for v in pairs(Pointshop2.GetModule('TTT Integration').Settings.Server.RoundWin) do
+			local tmp_table = Pointshop2.GetModule('TTT Integration').Settings.Server.RoundWin[v]
 			if not tmp_table.value or not tmp_table.team or tmp_table.team ~= result then continue end
 
 			points = tmp_table.value
@@ -96,12 +96,12 @@ hook.Add( "TTTEndRound", "PS2_TTTEndRound", function( result )
 		end
 
 		if not exception_found then
-			points = Pointshop2.GetModule('TTT Integration').TTT2Settings.RoundWin.Default.value
-			message = Pointshop2.GetModule('TTT Integration').TTT2Settings.RoundWin.Default.message
+			points = Pointshop2.GetModule('TTT Integration').Settings.Server.RoundWin.Default.value
+			message = Pointshop2.GetModule('TTT Integration').Settings.Server.RoundWin.Default.message
 		end
 
 		for k, v in pairs( player.GetAll( ) ) do
-			if not v:HasTeam(result) or (v.IsGhost and v:IsGhost()) or not table.HasValue( playersInRound, v ) then continue end
+			if v:GetTeam() ~= result or (v.IsGhost and v:IsGhost()) or not table.HasValue( playersInRound, v ) then continue end
 
 			v:PS2_AddStandardPoints(points, message)
 		end
@@ -115,6 +115,7 @@ hook.Add( "TTTEndRound", "PS2_TTTEndRound", function( result )
 end )
 
 hook.Add( "TTTFoundDNA", "PS2_TTTFoundDNA", function( ply, dnaOwner, ent )
+	if TTT2 then return end
 	ply.hasDnaOn = ply.hasDnaOn or {}
 	if S("Detective.DnaFound") and not ply.hasDnaOn[dnaOwner] then
 		ply:PS2_AddStandardPoints( S("Detective.DnaFound"), "Retrieved DNA", true )
@@ -124,7 +125,8 @@ end )
 
 hook.Add( "PlayerDeath", "PS2_PlayerDeath", function( victim, inflictor, attacker )
 	victim.hasDnaOn = {}
-	if victim == attacker then
+	if GetRoundState() ~= ROUND_ACTIVE then return end
+	if victim == attacker or victim:IsBot() then
 		return
 	end
 	if (attacker.IsGhost and attacker:IsGhost()) then return end --SpecDM Support.
@@ -167,8 +169,8 @@ hook.Add( "PlayerDeath", "PS2_PlayerDeath", function( victim, inflictor, attacke
 
 	local exception_found = false
 
-	for v in pairs(Pointshop2.GetModule('TTT Integration').TTT2Settings.Kills) do
-		local tmp_table = Pointshop2.GetModule('TTT Integration').TTT2Settings.Kills[v]
+	for v in pairs(Pointshop2.GetModule('TTT Integration').Settings.Server.Kills) do
+		local tmp_table = Pointshop2.GetModule('TTT Integration').Settings.Server.Kills[v]
 		if tmp_table.label == "Teamkill" or tmp_table.label == "EnemyKill" or not tmp_table.role1 or not tmp_table.role2 or not tmp_table.value or not (tmp_table.role1 == attackerRole and tmp_table.role2 == victimRole) then continue end
 
 		points = tmp_table.value
@@ -178,14 +180,14 @@ hook.Add( "PlayerDeath", "PS2_PlayerDeath", function( victim, inflictor, attacke
 	end
 
 	if not exception_found then
-		if attacker:HasTeam(victim:GetTeam()) then
-			points = Pointshop2.GetModule('TTT Integration').TTT2Settings.Kills.TeamKill.value
-			message = Pointshop2.GetModule('TTT Integration').TTT2Settings.Kills.TeamKill.message
-			delay = Pointshop2.GetModule('TTT Integration').TTT2Settings.Kills.TeamKill.delay
+		if attacker:IsInTeam(victim) then
+			points = Pointshop2.GetModule('TTT Integration').Settings.Server.Kills.TeamKill.value
+			message = Pointshop2.GetModule('TTT Integration').Settings.Server.Kills.TeamKill.message
+			delay = Pointshop2.GetModule('TTT Integration').Settings.Server.Kills.TeamKill.delay
 		else
-			points = Pointshop2.GetModule('TTT Integration').TTT2Settings.Kills.EnemyKill.value
-			message = Pointshop2.GetModule('TTT Integration').TTT2Settings.Kills.EnemyKill.message
-			delay = Pointshop2.GetModule('TTT Integration').TTT2Settings.Kills.EnemyKill.delay
+			points = Pointshop2.GetModule('TTT Integration').Settings.Server.Kills.EnemyKill.value
+			message = Pointshop2.GetModule('TTT Integration').Settings.Server.Kills.EnemyKill.message
+			delay = Pointshop2.GetModule('TTT Integration').Settings.Server.Kills.EnemyKill.delay
 		end
 	end
 

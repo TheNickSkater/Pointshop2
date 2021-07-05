@@ -4,7 +4,7 @@ function PointsBatch:initialize( currencyType )
 	if not currencyType or not table.HasValue( { "points", "premiumPoints"}, currencyType ) then
 		error( "Invalid currencyType. currencyType must be points or premiumPoints" )
 	end
-	
+
 	self.currencyType = currencyType
 	self.pointsChanges = nil
 end
@@ -13,15 +13,15 @@ function PointsBatch:isInProgress( )
 	return self.pointsChanges != nil
 end
 
-function PointsBatch:addPoints( ply, amount )	
+function PointsBatch:addPoints( ply, amount )
 	if not self:isInProgress( ) then
 		KLogf( 3, "[WARN] Adding Points to a batch before starting one" )
-		if LibK.Debug then 
+		if LibK.Debug then
 			debug.Trace( )
 		end
 		return
 	end
-	
+
 	self.pointsChanges[ply] = self.pointsChanges[ply] or 0
 	self.pointsChanges[ply] = self.pointsChanges[ply] + amount
 end
@@ -40,7 +40,7 @@ end
 function PointsBatch:finish( )
 	if not self:isInProgress( ) then
 		KLogf( 3, "[WARN] Ending points batch before starting one" )
-		if LibK.Debug then 
+		if LibK.Debug then
 			debug.Trace( )
 		end
 		return
@@ -49,19 +49,20 @@ function PointsBatch:finish( )
 	if table.Count( self.pointsChanges ) == 0 then
 		self.pointsChanges = nil
 		return
-	end 
-	
+	end
+
 	local query = "UPDATE ps2_wallet SET " .. self.currencyType .. " = CASE ownerId "
 	local ownerIds = {}
 	local parts = {}
 	for ply, points in pairs( self.pointsChanges ) do
-		if not IsValid( ply ) or not ply.kPlayerId then 
+		if not IsValid( ply ) or not ply.kPlayerId then
 			continue
 		end
 
 		if not table.HasValue( ownerIds, ply.kPlayerId ) then
 			table.insert( ownerIds, tonumber( ply.kPlayerId ) )
 		end
+		points = math.max(0, points)
 		table.insert( parts, Format( 'WHEN "%i" THEN %s + "%i"', ply.kPlayerId, self.currencyType, points ) )
 	end
 	query = query .. table.concat( parts, " " )
@@ -78,6 +79,8 @@ function PointsBatch:finish( )
 			if not ply.PS2_Wallet then
 				continue
 			end
+
+			points = math.max(0, points)
 
 			ply.PS2_Wallet[self.currencyType] = ply.PS2_Wallet[self.currencyType] + points
 			Pointshop2Controller:getInstance( ):broadcastWalletChanges( ply.PS2_Wallet )

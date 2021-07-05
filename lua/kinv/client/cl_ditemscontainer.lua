@@ -16,39 +16,39 @@ function PANEL:initSlots( amount )
 			v:Remove( )
 		end
 	end
-	
+
 	if not amount then
 		local x, y = self.m_iBorder, self.m_iBorder
 		local MaxWidth	= self:GetWide() - self.m_iBorder * 2;
 		local MaxHeight	= self:GetTall() - self.m_iBorder * 2;
 		local w, h = 64, 64
 		local RowHeight = h;
-		
+
 		self.count = 0
 		while y < MaxHeight do
 			if ( x + w > MaxWidth ) then
 				x = self.m_iBorder
 				y = y + RowHeight + self.m_iSpaceY
 				if y > MaxHeight then
-					break 
+					break
 				end
 			end
 			self.count = self.count + 1
 			x = x + w + self.m_iSpaceX
 			if self.count > 1000 then
 				print( "count > 1000" )
-				return 
+				return
 			end
 		end
 	else
 		self.count = amount
 	end
-	
+
 	for i = 1, self.count do
 		local slot = self:Add( "DItemSlot" )
 	end
 	self.initializedSlots = true
-	
+
 	if self.loadedItems then
 		self:setItems( self.itemsTbl )
 		self:loadItems( )
@@ -86,7 +86,7 @@ end
 
 function PANEL:savePositions( )
 	self.fname = "itempositions_" .. Pointshop2.CalculateServerHash( ) .. self.categoryName .. ".txt"
-	
+
 	self.itemPositions = {}
 	for pos, slot in ipairs( self:GetChildren( ) ) do
 		if slot.itemStack and slot.itemStack.items then
@@ -104,12 +104,12 @@ end
 */
 function PANEL:loadItems( dontSave )
 	self.fname = "itempositions_" .. Pointshop2.CalculateServerHash( ) .. self.categoryName .. ".txt"
-	
+
 	self.itemPositions = {}
 	if file.Exists( self.fname, "DATA" ) then
 		self.itemPositions = util.JSONToTable( file.Read( self.fname, "DATA" ) or "[]" )
 	end
-	
+
 	--Step 1: Add items with saved positions
 	local addedItems = {}
 	for _, item in pairs( self.itemsTbl ) do
@@ -124,20 +124,20 @@ function PANEL:loadItems( dontSave )
 			end
 		end
 	end
-	
+
 	--Step 2: Add new items that dont have saved positions
 	for _, item in pairs( self.itemsTbl ) do
 		if table.HasValue( addedItems, item ) then
 			continue
 		end
-		
+
 		for k, slot in pairs( self:GetChildren( ) ) do
 			if slot:addItem( item ) then
 				break
 			end
 		end
 	end
-	
+
 	if not dontSave then
 		--Step 3: Save positions
 		self:savePositions( )
@@ -150,15 +150,15 @@ function PANEL:itemRemoved( itemId )
 			self.itemsTbl[k] = nil
 		end
 	end
-	
+
 	for k, slot in pairs( self:GetChildren( ) ) do
 		if slot:itemRemoved( itemId ) then
 			break --found and removed the item
-		end 
+		end
 	end
 end
 
-function PANEL:itemAdded( item ) 
+function PANEL:itemAdded( item )
 	if not table.HasValue( self.itemsTbl, item ) then
 		table.insert( self.itemsTbl, item )
 	end

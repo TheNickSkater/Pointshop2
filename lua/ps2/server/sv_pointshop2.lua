@@ -83,8 +83,8 @@ function Pointshop2.FixDatabase( )
 						UPDATE kinv_items SET itempersistence_id = IF(CAST(SUBSTRING(itemclass, 18) AS SIGNED) = 0, NULL, CAST(SUBSTRING(itemclass, 18) AS SIGNED))
 						WHERE itemclass REGEXP "^KInventory\\.Items\\.[0-9]+$"
 					]])
-				else	
-					return Pointshop2.DB.DoQuery([[ 
+				else
+					return Pointshop2.DB.DoQuery([[
 						UPDATE kinv_items SET itempersistence_id = CASE WHEN CAST(substr(itemclass, 18) AS NUMERIC) = 0 THEN NULL ELSE CAST(substr(itemclass, 18) AS NUMERIC) END
 					]])
 				end
@@ -95,7 +95,7 @@ function Pointshop2.FixDatabase( )
 					return Pointshop2.DB.DoQuery([[
 						DELETE FROM kinv_items WHERE id IN (
 							SELECT items.id
-							FROM (SELECT * FROM kinv_items) items 
+							FROM (SELECT * FROM kinv_items) items
 							LEFT JOIN ps2_itempersistence persistences ON persistences.id = CAST(SUBSTRING(items.itemclass, 18) AS SIGNED)
 							WHERE items.itemclass REGEXP "^KInventory\\.Items\\.[0-9]+$" AND persistences.id IS NULL
 						)
@@ -104,7 +104,7 @@ function Pointshop2.FixDatabase( )
 					return Pointshop2.DB.DoQuery([[
 						DELETE FROM kinv_items WHERE id IN (
 							SELECT items.id
-							FROM (SELECT * FROM kinv_items) items 
+							FROM (SELECT * FROM kinv_items) items
 							LEFT JOIN ps2_itempersistence persistences ON persistences.id = CAST(substr(items.itemclass, 18) AS NUMERIC)
 							WHERE CAST(substr(items.itemclass, 18) AS NUMERIC) != 0 AND persistences.id IS NULL
 						)
@@ -113,27 +113,27 @@ function Pointshop2.FixDatabase( )
 				return Pointshop2.DB.DisableForeignKeyChecks( false )
 			end )
 	end )
-	
+
 	:Then( function()
 		-- Remove slots that have no valid item attached
 		return Pointshop2.DB.DoQuery( [[ DELETE s FROM `ps2_equipmentslot` s JOIN (SELECT s2.id FROM ps2_equipmentslot s2 LEFT JOIN kinv_items i ON i.id = s2.itemId WHERE i.id IS NULL) toDelete ON s.id = toDelete.id; ]] )
 	end )
 
-	:Then( function() 
+	:Then( function()
 		-- Remove items from inventories that are lua defined, but the lua defined item doesn't exist
 		return Pointshop2.DB.DoQuery(Format(
 			"SELECT id, itemclass FROM kinv_items WHERE CAST(substr(itemclass, 18) AS %s) = 0",
 			Pointshop2.DB.CONNECTED_TO_MYSQL and "SIGNED" or "NUMERIC"
 		)):Then(function(results)
-			if not results or #results == 0 then 
+			if not results or #results == 0 then
 				return
 			end
 
 			local brokenOnes = LibK._.filter( results, function( row )
-				return _G[itemclass] != nil				
+				return _G[itemclass] != nil
 			end )
 			return Promise.Map( brokenOnes, function( row )
-				return Pointshop2.DB.DoQuery( "DELETE FROM kinv_items WHERE id = " .. brokenOnes.id ) 
+				return Pointshop2.DB.DoQuery( "DELETE FROM kinv_items WHERE id = " .. brokenOnes.id )
 			end )
 		end)
 	end ):Then( function( )
@@ -157,7 +157,7 @@ function Pointshop2.FixDatabase( )
 		return Pointshop2.ItemMapping.getAll( 0 )
 	end )
 	:Then( function( itemMappings )
-		return Promise.Map( itemMappings, function( itemMapping ) 
+		return Promise.Map( itemMappings, function( itemMapping )
 			return Pointshop2.ItemPersistence.findById( itemMapping.itemClass )
 				:Then( function( persistence )
 					local isLuaDefined = KInventory.Items[itemMapping.itemClass] and KInventory.Items[itemMapping.itemClass].originFilePath != "Pointshop2_Generated"
@@ -235,8 +235,8 @@ function Pointshop2.FixDatabase( )
 					:map(function(slot) return slot.itemId end)
 					:join(',')
 					:value()
-				
-				
+
+
 				KLogf( 2, "Removing items from invalid slots " .. itemsToRemove)
 				return WhenAllFinished{
 					( #itemsToRemove > 0 ) and Pointshop2.DB.DoQuery(Format([[
